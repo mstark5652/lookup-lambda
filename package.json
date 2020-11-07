@@ -1,0 +1,39 @@
+{
+  "name": "lookup-lambda",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
+    "sinon": "^9.2.1",
+    "standard": "^16.0.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "whois": "^2.13.3"
+  },
+  "scripts": {
+    "start": "node ./server.js",
+    "lint": "standard",
+    "test": "mocha",
+    "test:coverage": "nyc mocha"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
