@@ -10,7 +10,7 @@ const fetchIpAddress = async address => {
   return response && response.data
 }
 
-const fetchDomain = domain => {
+const lookupDomain = async domain => {
   return new Promise((resolve, reject) => {
     whois.lookup(domain, function (err, data) {
       if (err) {
@@ -26,10 +26,18 @@ exports.handler = async (event) => {
   const params = event.queryStringParameters || {}
 
   let result
-  if (params.address && IP_REGEX.test(params.address)) {
-    result = await fetchIpAddress(params.address)
-  } else if (params.domain && DOMAIN_REGEX.test(params.domain)) {
-    result = await fetchDomain(params.domain)
+  try {
+    if (params.address && IP_REGEX.test(params.address)) {
+      result = await fetchIpAddress(params.address)
+    } else if (params.domain && DOMAIN_REGEX.test(params.domain)) {
+      result = await lookupDomain(params.domain)
+    }
+  } catch (error) {
+    console.error('Failed to fetch data', { params, error })
+    return {
+      statusCode: 500,
+      body: { error: 'Something broke on our end. Oops.' }
+    }
   }
 
   if (result) {
@@ -41,7 +49,7 @@ exports.handler = async (event) => {
   } else {
     return {
       statusCode: 400,
-      body: JSON.stringify({ error: 'You must provide query parameters of \'address\' or \'domain\'' })
+      body: { error: 'You must provide query parameters of \'address\' or \'domain\'' }
     }
   }
 }

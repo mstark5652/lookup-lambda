@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "chai": "^4.2.0",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
     "sinon": "^9.2.1",
+    "sinon-chai": "^3.5.0",
     "standard": "^16.0.1"
   },
   "dependencies": {
@@ -13,10 +15,8 @@
     "whois": "^2.13.3"
   },
   "scripts": {
-    "start": "node ./server.js",
     "lint": "standard",
-    "test": "mocha",
-    "test:coverage": "nyc mocha"
+    "test": "export NODE_ENV=test && nyc mocha --recursive --colors"
   },
   "eslintConfig": {
     "extends": [
