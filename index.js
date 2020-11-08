@@ -30,12 +30,18 @@ exports.handler = async (event) => {
       const result = await fetchIpAddress(params.address)
       return {
         statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
         body: JSON.stringify(result)
       }
     } else if (params.domain && DOMAIN_REGEX.test(params.domain)) {
       const result = await lookupDomain(params.domain)
       return {
         statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*'
+        },
         body: JSON.stringify({ data: result })
       }
     }
@@ -43,12 +49,18 @@ exports.handler = async (event) => {
     console.error('Failed to fetch data', { params, error })
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      },
       body: { error: 'Something broke on our end. Oops.' }
     }
   }
 
   return {
     statusCode: 400,
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
     body: { error: 'You must provide query parameters of \'address\' or \'domain\'' }
   }
 }
