@@ -25,12 +25,19 @@ const lookupDomain = async domain => {
 exports.handler = async (event) => {
   const params = event.queryStringParameters || {}
 
-  let result
   try {
     if (params.address && IP_REGEX.test(params.address)) {
-      result = await fetchIpAddress(params.address)
+      const result = await fetchIpAddress(params.address)
+      return {
+        statusCode: 200,
+        body: JSON.stringify(result)
+      }
     } else if (params.domain && DOMAIN_REGEX.test(params.domain)) {
-      result = await lookupDomain(params.domain)
+      const result = await lookupDomain(params.domain)
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ data: result })
+      }
     }
   } catch (error) {
     console.error('Failed to fetch data', { params, error })
@@ -40,16 +47,8 @@ exports.handler = async (event) => {
     }
   }
 
-  if (result) {
-    const response = {
-      statusCode: 200,
-      body: result
-    }
-    return response
-  } else {
-    return {
-      statusCode: 400,
-      body: { error: 'You must provide query parameters of \'address\' or \'domain\'' }
-    }
+  return {
+    statusCode: 400,
+    body: { error: 'You must provide query parameters of \'address\' or \'domain\'' }
   }
 }
