@@ -1,6 +1,6 @@
 {
   "name": "lookup-lambda",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "devDependencies": {
     "chai": "^4.2.0",
@@ -15,6 +15,10 @@
     "whois": "^2.13.3"
   },
   "scripts": {
+    "prebuild": "npm prune --production",
+    "build": "zip -r ./lambda-build.zip index.js node_modules/**/*",
+    "predeploy": "npm run build",
+    "deploy": "aws s3 cp lambda-build.zip s3://terraform-serverless-stage/v$(node -p \"require('./package.json').version\")/lambda-build.zip",
     "lint": "standard",
     "test": "export NODE_ENV=test && nyc mocha --recursive --colors"
   },
